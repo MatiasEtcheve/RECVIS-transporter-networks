@@ -92,6 +92,9 @@ pip install -e Monocular-Depth-Estimation-Toolbox/ # editable version
 mim install mmcv-full==1.4.0
 ```
 
+> **Troubleshooting**:
+`mimcv-full` may have some troubles to get installed. Uninstalling and reinstalling `openmim` may work.
+
 ### Download the pretrained model checkpoint
 
 The repository uses BinsFormer pretrained model. You need to save it (in `checkpoints/` for instance.)
