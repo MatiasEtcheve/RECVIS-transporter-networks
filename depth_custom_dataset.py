@@ -1,8 +1,10 @@
 norm_cfg = dict(type="SyncBN", requires_grad=True)
 backbone_norm_cfg = dict(type="LN", requires_grad=True)
 model = dict(
+    type="DepthEncoderDecoder",
     pretrained="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth",  # noqa
     backbone=dict(
+        type="SwinTransformer",
         embed_dims=96,
         depths=[2, 2, 6, 2],
         num_heads=[3, 6, 12, 24],
@@ -116,7 +118,7 @@ test_pipeline = [
 ]
 data = dict(
     samples_per_gpu=16,
-    workers_per_gpu=8,
+    workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         data_root=data_root + "/train",
@@ -194,6 +196,6 @@ log_config = dict(
         dict(type="TensorboardLoggerHook"),  # TensorboardImageLoggerHook
     ],
 )
-
+resume_from = None
 
 find_unused_parameters = True
