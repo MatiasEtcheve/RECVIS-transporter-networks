@@ -95,7 +95,13 @@ train_pipeline = [
     dict(type="RandomRotate", prob=0.5, degree=2.5),
     dict(type="RandomFlip", prob=0.5),
     dict(type="RandomCrop", crop_size=(416, 544)),
-    # dict(type='ColorAug', prob=1, gamma_range=[0.9, 1.1], brightness_range=[0.75, 1.25], color_range=[0.9, 1.1]),
+    dict(
+        type="ColorAug",
+        prob=1,
+        gamma_range=[0.9, 1.1],
+        brightness_range=[0.75, 1.25],
+        color_range=[0.9, 1.1],
+    ),
     dict(type="Normalize", **img_norm_cfg),
     dict(type="DefaultFormatBundle"),
     dict(type="Collect", keys=["img", "depth_gt"]),
@@ -196,6 +202,7 @@ log_config = dict(
         dict(type="TensorboardLoggerHook"),  # TensorboardImageLoggerHook
     ],
 )
+load_from = "binsformer_swint_nyu_converted.pth"
 resume_from = None
 
 find_unused_parameters = True
