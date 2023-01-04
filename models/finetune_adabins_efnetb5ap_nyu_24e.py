@@ -25,7 +25,7 @@ model = dict(
     test_cfg=dict(mode="whole"),
 )
 find_unused_parameters = True
-SyncBN = True
+# SyncBN = True
 
 # dataset settings Only for test
 dataset_type = "CustomDepthDataset"
@@ -54,7 +54,7 @@ train_pipeline = [
 ]
 test_pipeline = [
     dict(type="LoadImageFromFile"),
-    dict(type="Resize", img_scale=(480, 640)),
+    # dict(type="Resize", img_scale=(480, 640)),
     dict(
         type="MultiScaleFlipAug",
         img_scale=(480, 640),
@@ -130,7 +130,7 @@ optimizer_config = dict(grad_clip=dict(max_norm=0.1, norm_type=2))
 evaluation = dict(by_epoch=True, interval=1)
 
 # runtime settings
-runner = dict(type="EpochBasedRunner", max_iters=24)
+runner = dict(type="EpochBasedRunner", max_epochs=24)
 checkpoint_config = dict(by_epoch=True, max_keep_ckpts=2, interval=1)
 
 # iter runtime
@@ -142,5 +142,5 @@ log_config = dict(
         dict(type="TensorboardLoggerHook"),  # TensorboardImageLoggerHook
     ],
 )
-load_from = "adabins_efnetb5_nyu.pth"
+load_from = "models/adabins_efnetb5_nyu.pth"
 resume_from = None

@@ -72,6 +72,15 @@ sudo rm cuda
 ln -s cuda-10.1 cuda
 ```
 
+### Install Pytorch3d
+
+```{bash}
+curl -LO https://github.com/NVIDIA/cub/archive/1.10.0.tar.gz
+tar xzf 1.10.0.tar.gz
+export CUB_HOME=$PWD/cub-1.10.0
+pip install "git+https://github.com/facebookresearch/pytorch3d.git"
+```
+
 ### Installation of the packages
 
 Then you can simply install the repository and its submodules
