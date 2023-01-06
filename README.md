@@ -99,6 +99,9 @@ pip install -e ravens/ # editable version
 # install the toolbox for depth estimation
 pip install -e Monocular-Depth-Estimation-Toolbox/ # editable version
 mim install mmcv-full==1.4.0
+
+import sys
+# sys.path.append("AdaBins/")
 ```
 
 > **Troubleshooting**:
