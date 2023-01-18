@@ -15,11 +15,10 @@ This idea is to decompose a robotic manipulation in 2 steps:
 Transporter networks uses an action-value function invariant to the pick step.
 Thanks to the 2 equivariant and invariant properties, the transporter networks are highly sample-efficient.
 
-The authors have published [ravens](https://github.com/google-research/ravens/tree/master/ravens): a python framework to simulate
+The authors have published [Ravens](https://github.com/google-research/ravens/tree/master/ravens): a python framework to simulate
 10 robot manipulation tasks. In this work, we will focus on 2 tasks:
 * `block-insertion`: the robot needs to pick a L-shaped object and put it on a L-shaped support
-* `manipulating-rope`: the robot needs to manipulate a rope so that it finishes the incomplete
-perimeter of a square.
+* `manipulating-rope`: the robot needs to manipulate a rope so that it finishes the incomplete perimeter of a square.
 
 ### Depth ablation study 
 
@@ -40,6 +39,8 @@ Here, we directly estimate the depth from RGB images, before the top down recons
 ![](figs/hard_deletion.png)
 
 The authors have published the algorithm inside this [repository](https://github.com/shariqfarooq123/AdaBins).
+
+> Note: here, I made a fork of Ravens in order to add a command-line for hard-ablation and adding a few saved information when testing a trained transporer network on a test set.
 
 ## Installation
 
@@ -223,7 +224,7 @@ Specifically, here are some observed policies.
 |---|---|
 | ![](figs/block_slowest_success.gif) | ![](figs/block_slowest_fail.gif) |
 
-**On *block-insertion* task:**
+**On *manipulating-rope* task:**
 
 | Before training | After training |
 |---|---|
