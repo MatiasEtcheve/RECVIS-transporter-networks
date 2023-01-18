@@ -21,14 +21,21 @@ The authors have published [ravens](https://github.com/google-research/ravens/tr
 * `manipulating-rope`: the robot needs to manipulate a rope so that it finishes the incomplete
 perimeter of a square.
 
-### Depth estimation of the transporter network inputs
+### Depth ablation study 
 
-Transport networks uses RGB-Depth images. While obtaining depth images is
-getting easier, it is still preferable to only use RGB images.
-We use the BinsFormer framework published in this [article](https://arxiv.org/abs/2204.00987).
-This algorithm predicts depth on RGB images.
+Transport networks uses RGB-Depth images. While obtaining depth images is getting easier, it is still preferable to only use RGB images.
 
-The authors have published the algorithm inside this [toolbox](https://github.com/zhyever/Monocular-Depth-Estimation-Toolbox).
+We develop 2 ways of deleting depth information.
+
+#### Soft deletion
+
+Here, we only delete the depth information, right before it is given to the transporter network, after the top down reconstruction.
+
+#### Hard deletion
+
+Here, we directly estimate the depth from RGB images, before the top down reconstruction. We use the AdaBins framework published in this [article](https://arxiv.org/abs/2011.14141), to predict depth on RGB images.
+
+The authors have published the algorithm inside this [repository](https://github.com/shariqfarooq123/AdaBins).
 
 ## Installation
 
@@ -36,7 +43,7 @@ The repository uses 2 different packages:
 * `ravens`: a gym-like framework which implements transporter networks. 
 It uses `tensorflow==2.3`, which works best wih `cuda-10.1`. 
 This version of cuda is going to be the primary one.
-* `Monocular-Depth-Estimation-Toolbox`: a toolbox which implements Adabins and BinsFormer. 
+* `AdaBins`: a repository which implements Adabins. 
 It uses `torch==1.8`, which works best/only with `cuda-10.2` 
 This version of cuda is going to be the secondary one. 
 
@@ -95,25 +102,102 @@ pip install -r requirements.txt
 # install ravens
 pip install -r ravens/requirements.txt
 pip install -e ravens/ # editable version
-
-# install the toolbox for depth estimation
-pip install -e Monocular-Depth-Estimation-Toolbox/ # editable version
-mim install mmcv-full==1.4.0
-
-import sys
-# sys.path.append("AdaBins/")
 ```
 
-> **Troubleshooting**:
-`mimcv-full` may have some troubles to get installed. Uninstalling and reinstalling `openmim` may work.
+In order to install AdaBins you will need to create a setup file:
 
-### Download the pretrained model checkpoint
+```{bash}
+echo -e 'from setuptools import find_packages, setup
+
+setup(
+    name="adabins",
+    version="0.0.1",
+    packages=find_packages(),
+    python_requires=">=3.6",
+)' >> AdaBins/setup.py
+
+mkdir AdaBins/adabins
+mv -v AdaBins/* -t AdaBins/adabins
+mv -t AdaBins AdaBins/adabins/setup.py AdaBins/adabins/README.md AdaBins/adabins/LICENSE
+```
+
+And then install it, so you can directly run `from adabins import ...`:
+
+```{bash}
+pip install -e AdaBins/ # editable version
+```
+
+### Download the data
+
+#### Download the dataset 
+
+You can directly download the dataset from Ravens. Here is how to fetch them:
+
+```{bash}
+mkdir dataset
+wget https://storage.googleapis.com/ravens-assets/block-insertion.zip -P dataset/
+unzip dataset/block-insertion
+wget https://storage.googleapis.com/ravens-assets/manipulating-rope.zip -P dataset/
+unzip dataset/manipulating-rope
+```
+
+#### Download the pretrained models for AdaBins
 
 The repository uses BinsFormer pretrained model. You need to save it (in `checkpoints/` for instance.)
 
 ```{bash}
-mkdir checkpoints && cd checkpoints
-gdown https://drive.google.com/uc\?id\=1tcWx_BQBNJHpP5-RUWGWjpVRfeUiUMzJ
+mkdir AdaBins/adabins/pretrained
+gdown "1HMgff-FV6qw1L0ywQZJ7ECa9VPq1bIoj&confirm=t" -O AdaBins/adabins/pretrained/ # download kitty model
+gdown "1lvyZZbC9NLcS8a__YPcUP7rDiIpbRpoF&confirm=t" -O AdaBins/adabins/pretrained/ # download nyu model
 ```
 
+> Note: if you have an error like `Cannot retrieve the public link of the file`, check this [thread](https://github.com/wkentaro/gdown/issues/43).
 
+
+## Working tree
+
+After the installation process, you should have something looking like:
+
+```{bash}
+.
+├── AdaBins/ # AdaBins Framework
+│   ├── LICENSE
+│   ├── README.md
+│   ├── adabins/
+│   │   ├── pretrained/ # Contain Adabins models
+│   │   │   ├── adabins_efnetb5_kitti.pth
+│   │   │   └── adabins_efnetb5_nyu.pth
+│   │   ├── ...
+│   └── setup.py
+├── dataset/ # Dataset for the 2 simulated tasks
+│   ├── block-insertion-test/
+│   │   ├── action/
+│   │   ├── color/
+│   │   ├── depth/
+│   │   ├── info/
+│   │   └── reward/
+│   ├── block-insertion-train/
+│   │   ├── ...
+│   ├── manipulating-rope-test/
+│   │   ├── ...
+│   └── manipulating-rope-train/
+│       ├── ...
+├── ravens/
+│   ├── setup.py
+│   └── ...
+├── RGB/
+│   ├── logs/
+│   └── predictions/
+├── RGB-Depth/
+│   ├── checkpoints/
+│   ├── logs/
+│   └── predictions/
+├── RGB-Estimated Depth/
+│   ├── logs/
+│   └── predictions/
+├── agent_visualisation.ipynb # visualize what an agent does with `pybullet`
+├── requirements.txt # requirements of the project. Maybe not exact
+└── training_visualisation.ipynb # plots curves
+```
+
+Each
