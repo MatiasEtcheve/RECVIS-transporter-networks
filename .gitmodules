@@ -1,3 +1,6 @@
 [submodule "ravens"]
 	path = ravens
 	url = git@github.com:MatiasEtcheve/ravens.git
+[submodule "AdaBins"]
+	path = AdaBins
+	url = https://github.com/shariqfarooq123/AdaBins.git
