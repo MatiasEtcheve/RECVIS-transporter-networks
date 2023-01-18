@@ -1,6 +1,3 @@
 [submodule "ravens"]
 	path = ravens
 	url = git@github.com:MatiasEtcheve/ravens.git
-[submodule "Monocular-Depth-Estimation-Toolbox"]
-	path = Monocular-Depth-Estimation-Toolbox
-	url = git@github.com:zhyever/Monocular-Depth-Estimation-Toolbox.git
