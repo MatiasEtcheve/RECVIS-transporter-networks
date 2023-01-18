@@ -31,9 +31,13 @@ We develop 2 ways of deleting depth information.
 
 Here, we only delete the depth information, right before it is given to the transporter network, after the top down reconstruction.
 
+![](figs/soft_deletion.png)
+
 #### Hard deletion
 
 Here, we directly estimate the depth from RGB images, before the top down reconstruction. We use the AdaBins framework published in this [article](https://arxiv.org/abs/2011.14141), to predict depth on RGB images.
+
+![](figs/hard_deletion.png)
 
 The authors have published the algorithm inside this [repository](https://github.com/shariqfarooq123/AdaBins).
 
@@ -200,4 +204,31 @@ After the installation process, you should have something looking like:
 └── training_visualisation.ipynb # plots curves
 ```
 
-Each
+Each `RGB-Depth`, `RGB` and `RGB-Estimated Depth` folders contain the results of the original transporter networks and the 2 ablation studies: soft and hard deletion.
+
+They each contains the logs of the training and the predictions ran on the test sets of each tasks.
+
+## Results
+
+With this repository, I was able to reproduce the results stated by the transport network authors. 
+Specifically, here are some observed policies.
+
+**On *block-insertion* task:**
+
+| Before training | After training |
+|---|---|
+| ![](figs/block_best_improvement_before.gif) | ![](figs/block_best_improvement_after.gif) |
+
+| Slowest success | Typical fail |
+|---|---|
+| ![](figs/block_slowest_success.gif) | ![](figs/block_slowest_fail.gif) |
+
+**On *block-insertion* task:**
+
+| Before training | After training |
+|---|---|
+| ![](figs/rope_best_improvement_before.gif) | ![](figs/rope_best_improvement_after.gif) |
+
+| Fastest success | Slowest success | Typical fail | 
+|---|---|---|
+| ![](figs/rope_fastest_success.gif) | ![](figs/rope_slowest_success.gif) | ![](figs/rope_slowest_fail.gif) |
